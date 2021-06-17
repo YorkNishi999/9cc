@@ -1,4 +1,7 @@
-#include"9cc.h"
+#include "9cc.h"
+
+
+
 	//
 	// code generator
 	//
@@ -59,9 +62,9 @@ int main(int argc, char **argv) {
 		error("%s: invalid number of arguments", argv[0]);
 
 	// トークナイズしてパースする
-	// user_input = argv[1];
-	Token *token = tokenize();
-	Node *node = parse(token);
+	user_input = argv[1];
+	token = tokenize();
+	Node *node = expr();
 
 	// アセンブリの前半部分を出力
 	printf(".intel_syntax noprefix\n");

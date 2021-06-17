@@ -1,10 +1,11 @@
-#include"9cc.h"
+#include "9cc.h"
 
-// インプットを保存する変数
-static char *user_input;
+//
+// tokenizer
+//
 
-// 現在着目しているトークン
-static Token *token;
+
+
 
 // Reports an error and exit.
 void error(char *fmt, ...) {
@@ -14,17 +15,6 @@ void error(char *fmt, ...) {
 	fprintf(stderr, "\n");
 	exit(1);
 }
-
-static void verror_at(char *loc, char *fmt, va_list ap) {
-	int pos = loc - user_input;
-	fprintf(stderr, "%s\n", user_input);
-	fprintf(stderr, "%*s\n", pos, "");
-	fprintf(stderr, "^ ");
-	vfprintf(stderr, fmt, ap);
-	fprintf(stderr, "\n");
-	exit(1);
-}
-
 
 // エラー箇所を報告する
 void error_at(char *loc, char *fmt, ...) {
@@ -40,11 +30,6 @@ void error_at(char *loc, char *fmt, ...) {
 	exit(1);
 }
 
-//void error_tok(Token *tok, char *fmt, ...) {
-//	va_list ap;
-//	va_start(ap, fmt);
-//	verror_at(tok->loc, fmt, ap);
-//}
 
 // 次のトークンが期待している記号のときには、トークンを1つ読み進めて
 // 真を返す。それ以外の場合には偽を返す。

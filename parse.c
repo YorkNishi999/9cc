@@ -1,12 +1,10 @@
 #include "9cc.h"
 
-Node *expr();
-Node *equality();
-Node *relational();
-Node *add();
-Node *mul();
-Node *unary();
-Node *primary();
+//
+// パーサ
+//
+
+
 
 Node *new_node(NodeKind kind) {
 	Node *node = calloc(1, sizeof(Node));
@@ -112,10 +110,3 @@ Node *primary() {
 
 	return new_num(expect_number());
 }
-
-// Node *parse(Token *token) {
-//	Node *node = expr(&token, token);
-//	if (token->kind != TK_EOF)
-//		error_tok(token, "extra token");
-//	return node;
-//}

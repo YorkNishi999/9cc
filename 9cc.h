@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include<string.h>
 
+
 //
 // tokenize.c
 //
@@ -16,9 +17,9 @@ typedef enum {
 	TK_EOF,				// 入力の終わりを表すトークン
 } TokenKind;
 
+typedef struct Token Token;
 
 // トークン型 連結リストで表現されている
-typedef struct Token Token;
 struct Token {
 	TokenKind kind;		// トークンの型
 	Token *next;			// 次の入力トークン（nextはトークン型のポインタ）
@@ -27,25 +28,26 @@ struct Token {
 	int len;				// トークンの長さ
 };
 
-// report error 
+// インプットを保存する変数
+char *user_input;
+
+// 現在着目しているトークン
+Token *token;
+
 void error(char *fmt, ...);
 void error_at(char *loc, char *fmt, ...);
-
-// トークナイザ
 bool consume(char *op);
 void expect(char *op);
 int expect_number();
-bool et_eof();
+bool at_eof();
 Token *new_token(TokenKind kind, Token *cur, char *str, int len);
 bool startswith(char *p, char *q);
-
-Token *tokenize(); 
+Token *tokenize();
 
 //
-// parse.c
+//parse.c
 //
 
-// 演算子の種類
 typedef enum {
 	ND_ADD, // +
 	ND_SUB, // -
@@ -67,4 +69,15 @@ struct Node {
 	int val;				// kind == ND_NUM のとき使う
 };
 
-Node *parse(Token *token);
+Node *new_node(NodeKind kind);
+Node *new_binary(NodeKind kind, Node *lhs, Node *rhs);
+Node *new_num(int val);
+
+Node *expr();
+Node *equality();
+Node *relational();
+Node *add();
+Node *mul();
+Node *unary();
+Node *primary();
+
