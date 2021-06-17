@@ -113,9 +113,9 @@ Node *primary() {
 	return new_num(expect_number());
 }
 
-Node *parse(Token *token) {
-	Node *node = expr(&token, token);
-	if (token->kind != TK_EOF)
-		error_tok(token, "extra token");
-	return node;
-}
+// Node *parse(Token *token) {
+//	Node *node = expr(&token, token);
+//	if (token->kind != TK_EOF)
+//		error_tok(token, "extra token");
+//	return node;
+//}
