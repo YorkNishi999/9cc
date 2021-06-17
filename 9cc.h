@@ -5,7 +5,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-
 //
 // tokenize.c
 //
@@ -17,9 +16,9 @@ typedef enum {
 	TK_EOF,				// 入力の終わりを表すトークン
 } TokenKind;
 
-typedef struct Token Token;
 
 // トークン型 連結リストで表現されている
+typedef struct Token Token;
 struct Token {
 	TokenKind kind;		// トークンの型
 	Token *next;			// 次の入力トークン（nextはトークン型のポインタ）
@@ -81,3 +80,8 @@ Node *mul();
 Node *unary();
 Node *primary();
 
+//
+// gen.c
+//
+
+void gen(Node *node);

@@ -4,9 +4,6 @@
 // tokenizer
 //
 
-
-
-
 // Reports an error and exit.
 void error(char *fmt, ...) {
 	va_list ap;

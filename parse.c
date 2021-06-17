@@ -4,8 +4,6 @@
 // パーサ
 //
 
-
-
 Node *new_node(NodeKind kind) {
 	Node *node = calloc(1, sizeof(Node));
 	node->kind = kind;
