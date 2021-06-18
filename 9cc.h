@@ -12,6 +12,7 @@
 // トークン（意味のあるヒトカタマリの単語）の種類
 typedef enum {
 	TK_RESERVED,	// 記号
+	TK_IDENT,			// 識別子
 	TK_NUM,				// 整数トークン
 	TK_EOF,				// 入力の終わりを表すトークン
 } TokenKind;
@@ -52,6 +53,8 @@ typedef enum {
 	ND_SUB, // -
 	ND_MUL, // *
 	ND_DIV, // /
+	ND_ASSIGN, // = 変数代入
+	ND_LVAR, // ローカル変数
 	ND_EQ, // ==
 	ND_NE, // !=
 	ND_LT, // < or >
@@ -59,13 +62,14 @@ typedef enum {
 	ND_NUM, // integer
 } NodeKind;
 
-// AST node type
+// AST node type(抽象構文木のノード)
 typedef struct Node Node;
 struct Node {
 	NodeKind kind;	// ノードの種類
 	Node *lhs;			// 左サイドのノード
 	Node *rhs;			// 右サイドのノード
 	int val;				// kind == ND_NUM のとき使う
+	int offset;				//kind がND_LVAR（ローカル変数）のときに使う
 };
 
 Node *new_node(NodeKind kind);

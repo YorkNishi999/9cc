@@ -4,6 +4,9 @@
 // パーサ
 //
 
+// TODO: パース結果のノードをストアする配列(他のファイルでも使うか？global in h file?)
+Node *code[100]; 
+
 Node *new_node(NodeKind kind) {
 	Node *node = calloc(1, sizeof(Node));
 	node->kind = kind;
@@ -23,9 +26,33 @@ Node *new_num(int val) {
 	return node;
 }
 
+// program = 一番上位概念
+void program() {
+	int i=0;
+	while(!at_eof())
+		code[i++] = stmt();
+	code[i] = NULL;
+}
+//  TODO: ↑の部分をどうやってmain関数内にいれる？
+
+// stmt = expr ";"
+Node *stmt() {
+	Node *node = expr();
+	expect(";");
+	return node;
+}
+
 // expr = equality
 Node *expr() {
-	return equality();
+	return assign();
+}
+
+// assign = equality ("=" assign)?
+Node *assign() {
+	Node *node = equality();
+	if (consume("="))
+		node = new_node(ND_ASSIGN, node, assign()); // TODO: new_node以外の関数がいる？
+	return node;
 }
 
 // equality = relational ("==" relational | "!=" relational)*
@@ -105,6 +132,16 @@ Node *primary() {
 		expect(")");
 		return node;
 	}
+
+	// TODO: 以下は適当にいれただけ。多分変更必要。
+	Token *tok = consume_ident(); // TODO: この関数なに？
+	it (tok) {
+		Node *node = calloc(1, sizeof(Node));
+		node->kind = ND_LVAR;
+		node->offset = (tok->str[0] - 'a' + 1) * 8; // offset はコンパイラで勝手に定義してよいので、この数値リテラルに意味はない
+		return node;
+	}
+
 
 	return new_num(expect_number());
 }
