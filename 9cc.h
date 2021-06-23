@@ -28,6 +28,18 @@ struct Token {
 	int len;				// トークンの長さ
 };
 
+// 複数文字の変数
+typedef struct LVar LVar;
+struct LVar {
+	LVar *next;			// 次の変数かNULL
+	char *name; 	// 変数の名前
+	int len; 			// 名前の長さ
+	int offset; 		// RBPからのオフセット
+};
+
+// local variables
+LVar *locals;
+
 // インプットを保存する変数
 char *user_input;
 
@@ -41,6 +53,7 @@ Token *consume_ident();
 void expect(char *op);
 int expect_number();
 bool at_eof();
+LVar *find_lvar(Token *tok);
 Token *new_token(TokenKind kind, Token *cur, char *str, int len);
 bool startswith(char *p, char *q);
 Token *tokenize(char *p);
