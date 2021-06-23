@@ -49,6 +49,14 @@ Token *consume_ident() {
 	return t;
 }
 
+// token がreturnの場合
+bool consume_return() {
+	if (token->kind != TK_RETURN) 
+		return false;
+	token = token->next;
+	return true;
+}
+
 // 次のトークンが期待している記号のときには、トークンを1つ読み進める。
 // それ以外の場合にはエラーを報告する。
 void expect(char *op) {
@@ -105,7 +113,6 @@ bool is_alnum(char c) {
 // 入力文字列pをトークナイズしてそれを返す
 Token *tokenize(char *p) {
 	// user_inputをトークナイズする
-	// char *p = user_input;
 	Token head;
 	head.next = NULL;
 	Token *cur = &head;
@@ -128,6 +135,13 @@ Token *tokenize(char *p) {
 		// Single-letter punctuator
 		if(strchr("+-*/()<>;=", *p)) {
 			cur = new_token(TK_RESERVED, cur, p++, 1);
+			continue;
+		}
+
+		// return (return のトークナイズ)
+		if (strncmp(p, "return", 6) == 0 && !is_alnum(p[6])) {
+			cur = new_token(TK_RETURN, cur, p, 6);
+			p += 6;
 			continue;
 		}
 
